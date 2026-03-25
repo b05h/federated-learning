@@ -574,7 +574,7 @@ def health_dashboard_page():
         }
 
         header[data-testid="stHeader"] {
-            display: none !important;
+            background: transparent;
         }
 
         .element-container { margin-bottom: 0px !important; }
@@ -653,10 +653,26 @@ def health_dashboard_page():
     st.sidebar.markdown("<h2 style='color: #111; margin-bottom: 20px;'>Patient Vitals</h2>", unsafe_allow_html=True)
 
     with st.sidebar.expander("Demographics & Vitals", expanded=True):
-        age = st.slider("Age", 21, 100, 33)
-        bmi = st.slider("BMI", 0.0, 70.0, 25.0)
+        gender = st.selectbox("Sex", ["Female", "Male"])
+        age = st.slider("Age", 0, 100, 33)
+
+        height = st.slider("Height (cm)", 100, 220, 170)
+        weight = st.slider("Weight (kg)", 30, 150, 70)
+
+        # BMI calculation
+        height_m = height / 100
+        bmi = round(weight / (height_m ** 2), 2)
+
         blood_pressure = st.slider("Blood Pressure", 0, 140, 70)
-        pregnancies = st.slider("Pregnancies", 0, 20, 1)
+
+
+        #pregnancies = st.slider("Pregnancies", 0, 20, 1)
+        if gender == "Male":
+            pregnancies = 0
+            st.slider("Pregnancies", 0, 20, 0, disabled=True)
+        else:
+            pregnancies = st.slider("Pregnancies", 0, 20, 0)
+
 
     with st.sidebar.expander("Lab Results", expanded=True):
         glucose = st.slider("Glucose Level", 0, 250, 100)
