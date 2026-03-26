@@ -507,6 +507,7 @@ import tensorflow as tf
 import os
 import pickle
 import config
+import time
 
 st.set_page_config(page_title="Diabetes Health Dashboard", page_icon="🧬", layout="wide")
 
@@ -926,6 +927,23 @@ def health_dashboard_page():
         insight_container = st.empty()
         
         if run_diag:
+            with pred_container.container():
+                st.markdown("""
+                    <div style="border:1px solid rgba(58,190,255,0.18); background:rgba(58,190,255,0.08); border-radius:20px; padding:40px; text-align:center; height:260px; display:flex; flex-direction:column; justify-content:center; align-items:center;">
+                        <div style="font-size:14px; font-weight:700; color:#3ABEFF; text-transform:uppercase; letter-spacing:2px; margin-bottom:14px;">
+                            Processing
+                        </div>
+                        <div style="font-size:28px; font-weight:800; color:#FFFFFF; margin-bottom:10px;">
+                            Analyzing Patient Data...
+                        </div>
+                        <div style="font-size:14px; color:#8E9BAE;">
+                            Please wait while the AI risk engine generates the result.
+                        </div>
+                    </div>
+                """, unsafe_allow_html=True)
+
+            time.sleep(2)
+
             input_scaled = scaler.transform(input_data)
             prediction_prob = model.predict(input_scaled, verbose=0)[0][0]
             
